@@ -31,7 +31,7 @@ public class StudentAspect {
 
         Student student = getStudent(pjp);
         if(Objects.nonNull(student)){
-            log.info("student.toString : {}" , student.toString());
+            log.info("student : {}" , student);
         }
 
         log.info("Around finished - {} / {}", pjp.getSignature().getDeclaringTypeName(), pjp.getSignature().getName());
@@ -47,7 +47,7 @@ public class StudentAspect {
 
         Student student = getStudent(joinPoint);
         if(Objects.nonNull(student)){
-            log.info("Before student.toString() : {}" , student.toString());
+            log.info("Before student : {}" , student);
         }
 
         log.info("Before/After finished - {} / {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
@@ -58,15 +58,15 @@ public class StudentAspect {
         log.error("AfterThrowing error message : {}", exception.getMessage());
     }
 
-    @AfterReturning(pointcut = "execution(* io.simpolor.aop.service.StudentService.*(..))", returning = "retVal")
-    public void afterReturningStudent(JoinPoint joinPoint, Object retVal) {
+    @AfterReturning(pointcut = "execution(* io.simpolor.aop.service.StudentService.*(..))", returning = "handler")
+    public void afterReturningStudent(JoinPoint joinPoint, Object handler) {
 
-        if(Objects.nonNull(retVal)){
-            log.info("AfterReturning value : "+retVal.toString());
+        if(Objects.nonNull(handler)){
+            log.info("AfterReturning value : "+handler);
         }
 
-        if(retVal instanceof Student){
-            Student student = (Student) retVal;
+        if(handler instanceof Student){
+            Student student = (Student) handler;
             student.setName(student.getName() + "_changed");
         }
     }
@@ -74,7 +74,7 @@ public class StudentAspect {
     @Around("@annotation(StudentCheck)")
     public Object studentCheck(ProceedingJoinPoint pjp) throws Throwable {
 
-        log.info("Annotaion checked - {} / {}", pjp.getSignature().getDeclaringTypeName(), pjp.getSignature().getName());
+        log.info("Annotation checked - {} / {}", pjp.getSignature().getDeclaringTypeName(), pjp.getSignature().getName());
 
         return pjp.proceed();
     }
