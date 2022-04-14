@@ -1,0 +1,12 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    use-legacy-processing: true
+  profiles:
+    active: @spring.profiles.active@
+
+application:
+  name: simpolor
+  email: simpolor@gmail.com
